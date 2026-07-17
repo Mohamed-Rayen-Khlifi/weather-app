@@ -1,0 +1,109 @@
+. {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    background: rgba(255,255,255,0.95);
+    border-radius: 30px;
+    padding: 30px;
+    max-width: 900px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+
+h1 {
+    text-align: center;
+    color: #0f2027;
+    margin-bottom: 25px;
+    font-size: 2rem;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.card {
+    background: #f0f8ff;
+    border-radius: 15px;
+    padding: 18px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+.card h3 {
+    color: #203a43;
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+.card .value {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #0f2027;
+}
+
+.card .time {
+    font-size: 0.75rem;
+    color: #888;
+    margin-top: 5px;
+}
+
+.history {
+    background: #f9f9f9;
+    border-radius: 15px;
+    padding: 15px;
+    margin: 20px 0;
+}
+
+.history h2 {
+    color: #203a43;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+#tempChart {
+    width: 100%;
+    max-height: 200px;
+}
+
+.controls {
+    text-align: center;
+    margin-top: 15px;
+}
+
+#refreshBtn {
+    background: #203a43;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#refreshBtn:hover {
+    background: #0f2027;
+    transform: scale(1.03);
+}
