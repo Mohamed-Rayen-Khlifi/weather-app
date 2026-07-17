@@ -1,14 +1,31 @@
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, Request
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from sqlalchemy import desc
 from .database import get_db
 from .models import Measurement, CollectorLog
 from .collector import save_weather
-from datetime import datetime, timedelta
+from datetime import datetime
 import pandas as pd
 import numpy as np
 
+
 app = FastAPI(title="Weather API", version="1.0")
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+templates = Jinja2Templates(directory="templates")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+@app.get("/")
+def dashboard(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
 
 @app.get("/health")
 def health():
@@ -30,16 +47,15 @@ def get_history(
     metric: str = "temperature",
     from_date: str = None,
     to_date: str = None,
+    limit: int = 50, 
     db: Session = Depends(get_db)
 ):
     query = db.query(Measurement).filter(Measurement.metric == metric)
-    
     if from_date:
         query = query.filter(Measurement.recorded_at >= from_date)
     if to_date:
         query = query.filter(Measurement.recorded_at <= to_date)
-    
-    results = query.order_by(Measurement.recorded_at).all()
+    results = query.order_by(Measurement.recorded_at).limit(limit).all()
     return [
         {
             "value": m.value,
@@ -47,6 +63,7 @@ def get_history(
         }
         for m in results
     ]
+
 @app.get("/forecast")
 def get_forecast(
     metric: str = "temperature",
@@ -58,13 +75,10 @@ def get_forecast(
         .order_by(desc(Measurement.recorded_at))\
         .limit(n_points)\
         .all()
-    
     if len(records) < 2:
         return {"forecast": None, "message": "Not enough data"}
-    
     values = [r.value for r in records]
     forecast = sum(values) / len(values)
-    
     return {
         "metric": metric,
         "forecast": round(forecast, 2),
@@ -83,18 +97,14 @@ def get_anomalies(
         .order_by(desc(Measurement.recorded_at))\
         .limit(50)\
         .all()
-    
     if len(records) < 10:
         return {"anomalies": [], "message": "Not enough data"}
-    
     df = pd.DataFrame([{
         "value": r.value,
         "recorded_at": r.recorded_at
     } for r in records])
-    
     mean = df["value"].mean()
     std = df["value"].std()
-    
     anomalies = []
     for _, row in df.iterrows():
         if abs(row["value"] - mean) > threshold * std:
@@ -103,7 +113,6 @@ def get_anomalies(
                 "recorded_at": row["recorded_at"].isoformat(),
                 "z_score": round((row["value"] - mean) / std, 2)
             })
-    
     return {
         "metric": metric,
         "threshold": threshold,
@@ -111,6 +120,7 @@ def get_anomalies(
         "std": round(std, 2),
         "anomalies": anomalies[-10:]
     }
+
 
 @app.on_event("startup")
 def startup_event():
@@ -122,14 +132,13 @@ def startup_event():
         db = SessionLocal()
         try:
             save_weather(db)
-            print(f"✅ Collecte exécutée à {datetime.now()}")
+            print(" Collecte exécutée à {datetime.now()}")
         except Exception as e:
-            print(f"❌ Erreur collecte: {e}")
+            print(" Erreur collecte: {e}")
         finally:
             db.close()
     
     collect_job()
-    
     scheduler = BackgroundScheduler()
     scheduler.add_job(
         collect_job,
@@ -138,4 +147,4 @@ def startup_event():
         replace_existing=True
     )
     scheduler.start()
-    print("🔄 Collecteur planifié toutes les 10 minutes")  
+    print(" Collecteur planifié toutes les 10 minutes")
