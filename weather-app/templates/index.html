@@ -1,45 +1,74 @@
 <!DOCTYPE html>
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌤️ Weather Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Station Météo · Tunis</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <div class="container">
-        <h1> Tableau de bord météo</h1>
-        <div class="cards">
-            <div class="card" id="temp-card">
-                <h3></h3> Température</h3>
-                <p class="value" id="temp-value">-- °C</p>
-                <p class="time" id="temp-time">--</p>
+    <main class="station">
+        <header class="masthead">
+            <p class="eyebrow">
+                Station météo
+                <span class="sep">·</span>
+                Tunis <span class="coords">36.81°N&nbsp;10.18°E</span>
+            </p>
+            <div class="masthead-row">
+                <h1>Conditions actuelles</h1>
+                <p class="sync" id="sync">
+                    <span class="dot" id="sync-dot" aria-hidden="true"></span>
+                    <span id="sync-text">synchronisation…</span>
+                </p>
             </div>
-            <div class="card" id="humidity-card">
-                <h3> Humidité</h3>
-                <p class="value" id="humidity-value">-- %</p>
-                <p class="time" id="humidity-time">--</p>
-            </div>
-            <div class="card" id="wind-card">
-                <h3> Vent</h3>
-                <p class="value" id="wind-value">-- km/h</p>
-                <p class="time" id="wind-time">--</p>
-            </div>
-            <div class="card" id="pressure-card">
-                <h3> Pression</h3>
-                <p class="value" id="pressure-value">-- hPa</p>
-                <p class="time" id="pressure-time">--</p>
-            </div>
-        </div>
-        <div class="history">
-            <h2> Historique (température)</h2>
-            <canvas id="tempChart" width="400" height="200"></canvas>
-        </div>
-        <div class="controls">
-            <button id="refreshBtn">🔄 Rafraîchir</button>
-        </div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        </header>
 
-    <script src="script.js"></script>
+        <section class="readouts" aria-label="Relevés en direct">
+            <article class="card card--hero" id="temp-card" data-metric="temperature">
+                <p class="card-label">Température</p>
+                <p class="card-value" id="temp-value">--<span class="unit">°C</span></p>
+                <p class="card-time" id="temp-time">en attente…</p>
+            </article>
+
+            <article class="card" id="humidity-card" data-metric="humidity">
+                <p class="card-label">Humidité</p>
+                <p class="card-value" id="humidity-value">--<span class="unit">%</span></p>
+                <p class="card-time" id="humidity-time">en attente…</p>
+            </article>
+
+            <article class="card" id="wind-card" data-metric="windspeed">
+                <p class="card-label">Vent</p>
+                <p class="card-value" id="wind-value">--<span class="unit">km/h</span></p>
+                <p class="card-time" id="wind-time">en attente…</p>
+            </article>
+
+            <article class="card" id="pressure-card" data-metric="pressure">
+                <p class="card-label">Pression</p>
+                <p class="card-value" id="pressure-value">--<span class="unit">hPa</span></p>
+                <p class="card-time" id="pressure-time">en attente…</p>
+            </article>
+        </section>
+
+        <section class="history" aria-label="Historique de la température">
+            <div class="history-head">
+                <h2>Historique · température</h2>
+                <p class="history-meta">24 derniers relevés</p>
+            </div>
+            <div class="chart-wrap">
+                <canvas id="tempChart"></canvas>
+            </div>
+        </section>
+
+        <footer class="controls">
+            <button id="refreshBtn" type="button">Rafraîchir</button>
+            <span class="auto-note">Mise à jour auto · 60&nbsp;s</span>
+        </footer>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/static/script.js"></script>
 </body>
 </html>
