@@ -135,9 +135,9 @@ def startup_event():
         db = SessionLocal()
         try:
             save_weather(db)
-            print(" Collecte exécutée à {datetime.now()}")
+            print(f" Collecte exécutée à {datetime.now()}")
         except Exception as e:
-            print(" Erreur collecte: {e}")
+            print(f" Erreur collecte: {e}")
         finally:
             db.close()
     

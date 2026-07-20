@@ -63,7 +63,7 @@ def save_weather(db: Session):
         log.message = f"Saved {len(metrics)} metrics at {data['recorded_at']}"
         db.add(log)
         db.commit() 
-        print({len(metrics)})
+        print(f"Saved {len(metrics)} metrics at {data['recorded_at']}")
         
     except Exception as e:
         db.rollback()
