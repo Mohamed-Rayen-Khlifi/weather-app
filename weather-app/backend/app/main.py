@@ -126,8 +126,11 @@ def get_anomalies(
 def startup_event():
     from apscheduler.schedulers.background import BackgroundScheduler
     from apscheduler.triggers.interval import IntervalTrigger
-    from .database import SessionLocal
-    
+    from .database import SessionLocal, Base, engine
+    from . import models
+
+    Base.metadata.create_all(bind=engine)
+
     def collect_job():
         db = SessionLocal()
         try:
