@@ -1,61 +1,216 @@
 {% extends "base.html" %}
 
+
 {% block title %}
 Dashboard
 {% endblock %}
 
+
 {% block content %}
 
-<h1>Current Weather</h1>
 
-<div class="cards">
+<div class="station">
 
-    <div class="card">
-        <h3>🌡 Temperature</h3>
-        <h2 id="temp-value">-- °C</h2>
-        <p id="temp-time">--</p>
+
+<header class="masthead">
+
+    <p class="eyebrow">
+        Station météo
+        <span class="sep">·</span>
+        Tunis
+    </p>
+
+
+    <div class="masthead-row">
+
+        <h1>
+            Conditions actuelles
+        </h1>
+
+
+        <p class="sync">
+
+            <span class="dot live"></span>
+
+            Synchronisation...
+
+        </p>
+
+
     </div>
 
-    <div class="card">
-        <h3>💧 Humidity</h3>
-        <h2 id="humidity-value">-- %</h2>
-        <p id="humidity-time">--</p>
-    </div>
 
-    <div class="card">
-        <h3>🌬 Wind</h3>
-        <h2 id="wind-value">-- km/h</h2>
-        <p id="wind-time">--</p>
-    </div>
+</header>
 
-    <div class="card">
-        <h3>📈 Pressure</h3>
-        <h2 id="pressure-value">-- hPa</h2>
-        <p id="pressure-time">--</p>
-    </div>
+
+
+
+<section class="readouts">
+
+
+<div class="card card--hero">
+
+
+<p class="card-label">
+Temperature
+</p>
+
+
+<p class="card-value" id="temp-value">
+--
+<span class="unit">
+°C
+</span>
+</p>
+
+
+<p class="card-time" id="temp-time">
+--
+</p>
+
 
 </div>
 
 
-<div class="chart-container">
 
-    <h2>Temperature History</h2>
 
-    <canvas id="tempChart"></canvas>
+
+<div class="card" id="humidity-card">
+
+
+<p class="card-label">
+Humidity
+</p>
+
+
+<p class="card-value" id="humidity-value">
+--
+<span class="unit">
+%
+</span>
+</p>
+
+
+<p class="card-time" id="humidity-time">
+--
+</p>
+
 
 </div>
 
 
-<div class="buttons">
 
-    <button id="refreshBtn">
-        Refresh
-    </button>
+
+
+
+<div class="card" id="wind-card">
+
+
+<p class="card-label">
+Wind
+</p>
+
+
+<p class="card-value" id="wind-value">
+--
+<span class="unit">
+km/h
+</span>
+</p>
+
+
+<p class="card-time" id="wind-time">
+--
+</p>
+
 
 </div>
 
 
-<script src="{{ url_for('static', path='js/dashboard.js') }}"></script>
+
+
+
+
+<div class="card" id="pressure-card">
+
+
+<p class="card-label">
+Pressure
+</p>
+
+
+<p class="card-value" id="pressure-value">
+--
+<span class="unit">
+hPa
+</span>
+</p>
+
+
+<p class="card-time" id="pressure-time">
+--
+</p>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+<section class="history">
+
+
+<div class="history-head">
+
+<h2>
+Temperature History
+</h2>
+
+
+<p class="history-meta">
+Last measurements
+</p>
+
+
+</div>
+
+
+
+<div class="chart-wrap">
+
+<canvas id="tempChart"></canvas>
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+<section class="controls">
+
+
+<button id="refreshBtn">
+Refresh
+</button>
+
+
+</section>
+
+
+
+</div>
+
+
+
+<script src="/static/js/dashboard.js"></script>
 
 
 {% endblock %}

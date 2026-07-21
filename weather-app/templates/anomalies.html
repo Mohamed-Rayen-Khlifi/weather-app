@@ -1,23 +1,37 @@
 {% extends "base.html" %}
 
+
 {% block title %}
 Anomalies
 {% endblock %}
 
 
+
 {% block content %}
 
-<h1>Weather Anomalies Detection</h1>
+
+<h1>
+    Weather Anomalies Detection
+</h1>
 
 
-<div id="anomalies-data" class="cards">
 
-    Loading...
+<div id="anomalies-summary" class="card">
+
+    Checking anomalies...
 
 </div>
 
 
+
+<div id="anomalies-data" class="cards">
+
+</div>
+
+
+
 <script src="/static/js/anomalies.js"></script>
+
 
 
 {% endblock %}
