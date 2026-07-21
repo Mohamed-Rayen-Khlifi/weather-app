@@ -11,46 +11,31 @@ Dashboard
 <div class="cards">
 
     <div class="card">
-
         <h3>🌡 Temperature</h3>
-
         <h2 id="temp-value">-- °C</h2>
-
         <p id="temp-time">--</p>
-
     </div>
 
     <div class="card">
-
         <h3>💧 Humidity</h3>
-
         <h2 id="humidity-value">-- %</h2>
-
         <p id="humidity-time">--</p>
-
     </div>
 
     <div class="card">
-
         <h3>🌬 Wind</h3>
-
         <h2 id="wind-value">-- km/h</h2>
-
         <p id="wind-time">--</p>
-
     </div>
 
     <div class="card">
-
         <h3>📈 Pressure</h3>
-
         <h2 id="pressure-value">-- hPa</h2>
-
         <p id="pressure-time">--</p>
-
     </div>
 
 </div>
+
 
 <div class="chart-container">
 
@@ -60,17 +45,17 @@ Dashboard
 
 </div>
 
+
 <div class="buttons">
 
     <button id="refreshBtn">
-
         Refresh
-
     </button>
-<script>
-    console.log("HTML reached script");
-</script>
+
+</div>
+
 
 <script src="{{ url_for('static', path='js/dashboard.js') }}"></script>
+
 
 {% endblock %}

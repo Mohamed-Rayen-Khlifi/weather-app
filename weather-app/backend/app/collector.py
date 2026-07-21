@@ -96,13 +96,12 @@ def save_weather(db: Session):
         log.rows_saved = saved_count
         log.message = f"Successfully saved {saved_count} measurements"
 
-        db.add(log)
+            db.add(log)
 
         db.commit()
 
         print(f"{saved_count} measurements saved successfully")
-
-    except Exception as e:
+        except Exception as e:
 
         db.rollback()
 

@@ -8,6 +8,7 @@ from pathlib import Path
 
 from .collector import save_weather
 from .database import init_db, SessionLocal
+from . import models
 
 from .routers import weather
 from .routers import forecast
@@ -158,8 +159,6 @@ def startup_event():
     # Scheduler
     from apscheduler.schedulers.background import BackgroundScheduler
     from apscheduler.triggers.interval import IntervalTrigger
-
-
     scheduler = BackgroundScheduler()
 
 
