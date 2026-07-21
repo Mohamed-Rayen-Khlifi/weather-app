@@ -1,45 +1,76 @@
-<!DOCTYPE html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌤️ Weather Dashboard</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div class="container">
-        <h1> Tableau de bord météo</h1>
-        <div class="cards">
-            <div class="card" id="temp-card">
-                <h3></h3> Température</h3>
-                <p class="value" id="temp-value">-- °C</p>
-                <p class="time" id="temp-time">--</p>
-            </div>
-            <div class="card" id="humidity-card">
-                <h3> Humidité</h3>
-                <p class="value" id="humidity-value">-- %</p>
-                <p class="time" id="humidity-time">--</p>
-            </div>
-            <div class="card" id="wind-card">
-                <h3> Vent</h3>
-                <p class="value" id="wind-value">-- km/h</p>
-                <p class="time" id="wind-time">--</p>
-            </div>
-            <div class="card" id="pressure-card">
-                <h3> Pression</h3>
-                <p class="value" id="pressure-value">-- hPa</p>
-                <p class="time" id="pressure-time">--</p>
-            </div>
-        </div>
-        <div class="history">
-            <h2> Historique (température)</h2>
-            <canvas id="tempChart" width="400" height="200"></canvas>
-        </div>
-        <div class="controls">
-            <button id="refreshBtn">🔄 Rafraîchir</button>
-        </div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% extends "base.html" %}
 
-    <script src="script.js"></script>
-</body>
-</html>
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+
+<h1>Current Weather</h1>
+
+<div class="cards">
+
+    <div class="card">
+
+        <h3>🌡 Temperature</h3>
+
+        <h2 id="temp-value">-- °C</h2>
+
+        <p id="temp-time">--</p>
+
+    </div>
+
+    <div class="card">
+
+        <h3>💧 Humidity</h3>
+
+        <h2 id="humidity-value">-- %</h2>
+
+        <p id="humidity-time">--</p>
+
+    </div>
+
+    <div class="card">
+
+        <h3>🌬 Wind</h3>
+
+        <h2 id="wind-value">-- km/h</h2>
+
+        <p id="wind-time">--</p>
+
+    </div>
+
+    <div class="card">
+
+        <h3>📈 Pressure</h3>
+
+        <h2 id="pressure-value">-- hPa</h2>
+
+        <p id="pressure-time">--</p>
+
+    </div>
+
+</div>
+
+<div class="chart-container">
+
+    <h2>Temperature History</h2>
+
+    <canvas id="tempChart"></canvas>
+
+</div>
+
+<div class="buttons">
+
+    <button id="refreshBtn">
+
+        Refresh
+
+    </button>
+<script>
+    console.log("HTML reached script");
+</script>
+
+<script src="{{ url_for('static', path='js/dashboard.js') }}"></script>
+
+{% endblock %}

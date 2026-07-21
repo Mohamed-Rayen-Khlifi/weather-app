@@ -1,74 +1,116 @@
 import requests
+from datetime import datetime
 from sqlalchemy.orm import Session
+
 from .models import Measurement, CollectorLog
 from .config import Config
-from datetime import datetime
+
 
 def fetch_weather():
     params = {
         "latitude": Config.CITY_LAT,
         "longitude": Config.CITY_LON,
-        "current_weather": True,
-        "hourly": "temperature_2m,relativehumidity_2m,windspeed_10m,pressure_msl"
+        "current": [
+            "temperature_2m",
+            "relative_humidity_2m",
+            "wind_speed_10m",
+            "pressure_msl"
+        ]
     }
-    
+
     try:
-        response = requests.get(Config.OPENMETEO_URL, params=params)
+        response = requests.get(
+            Config.OPENMETEO_URL,
+            params=params,
+            timeout=10
+        )
+
         response.raise_for_status()
+
         data = response.json()
-        hourly = data.get("hourly", {})
-        if not hourly:
+
+        current = data.get("current")
+
+        if current is None:
             return None
-        idx = -1
+
         return {
-            "temperature": hourly["temperature_2m"][idx],
-            "humidity": hourly["relativehumidity_2m"][idx],
-            "windspeed": hourly["windspeed_10m"][idx],
-            "pressure": hourly["pressure_msl"][idx],
+            "temperature": current.get("temperature_2m"),
+            "humidity": current.get("relative_humidity_2m"),
+            "windspeed": current.get("wind_speed_10m"),
+            "pressure": current.get("pressure_msl"),
             "recorded_at": datetime.utcnow()
         }
+
     except Exception as e:
-        print(f" {e}")
+        print(f"Weather API Error: {e}")
         return None
 
+
 def save_weather(db: Session):
-    log = CollectorLog(status="running", rows_saved=0)
+
+    log = CollectorLog(
+        status="running",
+        rows_saved=0
+    )
+
     try:
+
         data = fetch_weather()
-        if not data:
+
+        if data is None:
+
             log.status = "error"
-            log.message = "No data from API"
+            log.message = "No data received from Open-Meteo API"
+
             db.add(log)
-            db.commit() 
+            db.commit()
+
             return
-        
+
         metrics = [
             ("temperature", data["temperature"]),
             ("humidity", data["humidity"]),
             ("windspeed", data["windspeed"]),
             ("pressure", data["pressure"])
         ]
-        
+
+        saved_count = 0
+
         for metric, value in metrics:
+
+            if value is None:
+                continue
+
             measurement = Measurement(
                 source="open-meteo",
                 metric=metric,
-                value=value,
+                value=float(value),
                 recorded_at=data["recorded_at"]
             )
+
             db.add(measurement)
-        
+            saved_count += 1
+
         log.status = "success"
-        log.rows_saved = len(metrics)
-        log.message = f"Saved {len(metrics)} metrics at {data['recorded_at']}"
+        log.rows_saved = saved_count
+        log.message = f"Successfully saved {saved_count} measurements"
+
         db.add(log)
-        db.commit() 
-        print({len(metrics)})
-        
+
+        db.commit()
+
+        print(f"{saved_count} measurements saved successfully")
+
     except Exception as e:
+
         db.rollback()
+
         log.status = "error"
+        log.rows_saved = 0
         log.message = str(e)
+
         db.add(log)
         db.commit()
-        print(f"{e}")
+
+        print(f"Collector Error: {e}")

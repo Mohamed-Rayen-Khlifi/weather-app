@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}
+History
+{% endblock %}
+
+
+{% block content %}
+
+<h1>Temperature History</h1>
+
+
+<div class="card">
+
+    <canvas id="historyChart"></canvas>
+
+</div>
+
+
+
+<div id="history-data" class="cards">
+
+    Loading...
+
+</div>
+
+
+
+<script src="/static/js/history.js"></script>
+
+
+{% endblock %}
