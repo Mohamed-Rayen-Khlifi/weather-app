@@ -7,6 +7,7 @@ from .config import Config
 
 
 def fetch_weather():
+
     params = {
         "latitude": Config.CITY_LAT,
         "longitude": Config.CITY_LON,
@@ -19,6 +20,7 @@ def fetch_weather():
     }
 
     try:
+
         response = requests.get(
             Config.OPENMETEO_URL,
             params=params,
@@ -42,9 +44,12 @@ def fetch_weather():
             "recorded_at": datetime.utcnow()
         }
 
+
     except Exception as e:
+
         print(f"Weather API Error: {e}")
         return None
+
 
 
 def save_weather(db: Session):
@@ -54,9 +59,11 @@ def save_weather(db: Session):
         rows_saved=0
     )
 
+
     try:
 
         data = fetch_weather()
+
 
         if data is None:
 
@@ -68,6 +75,7 @@ def save_weather(db: Session):
 
             return
 
+
         metrics = [
             ("temperature", data["temperature"]),
             ("humidity", data["humidity"]),
@@ -75,12 +83,15 @@ def save_weather(db: Session):
             ("pressure", data["pressure"])
         ]
 
+
         saved_count = 0
+
 
         for metric, value in metrics:
 
             if value is None:
                 continue
+
 
             measurement = Measurement(
                 source="open-meteo",
@@ -92,16 +103,23 @@ def save_weather(db: Session):
             db.add(measurement)
             saved_count += 1
 
+
+
         log.status = "success"
         log.rows_saved = saved_count
         log.message = f"Successfully saved {saved_count} measurements"
 
-            db.add(log)
+
+        db.add(log)
 
         db.commit()
 
+
         print(f"{saved_count} measurements saved successfully")
-        except Exception as e:
+
+
+
+    except Exception as e:
 
         db.rollback()
 
