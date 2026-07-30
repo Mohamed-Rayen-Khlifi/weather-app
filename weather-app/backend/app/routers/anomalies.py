@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 
 from ..database import get_db
 from ..services.anomaly_service import get_anomalies
+from ..schemas import AnomalyRequest
 
 
 router = APIRouter(
@@ -11,13 +12,14 @@ router = APIRouter(
 
 
 
-@router.get("/anomalies")
+@router.put("/anomalies")
 def anomalies(
-    threshold: float = 2.0,
+    request: AnomalyRequest,
     db: Session = Depends(get_db)
 ):
 
     return get_anomalies(
-        db,
-        threshold=threshold
+        db=db,
+        metric=request.metric,
+        threshold=request.threshold
     )

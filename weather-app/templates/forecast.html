@@ -13,11 +13,58 @@ Forecast
 <h1>Weather Forecast</h1>
 
 
-<div id="forecast-data" class="cards">
 
-    Loading...
+<div class="controls">
+
+
+    <label for="metric-select">
+        Select metric:
+    </label>
+
+
+    <select id="metric-select">
+
+        <option value="temperature">
+            Temperature
+        </option>
+
+
+        <option value="humidity">
+            Humidity
+        </option>
+
+
+        <option value="windspeed">
+            Wind Speed
+        </option>
+
+
+        <option value="pressure">
+            Pressure
+        </option>
+
+
+    </select>
+
+
+
+    <button id="forecast-btn">
+        Get Forecast
+    </button>
+
 
 </div>
+
+
+
+
+<div id="forecast-data" class="cards">
+
+    Select a metric...
+
+</div>
+
+
 
 
 <script src="/static/js/forecast.js"></script>
