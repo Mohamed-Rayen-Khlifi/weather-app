@@ -1,4 +1,4 @@
- console.log("ANOMALIES JS LOADED");
+console.log("ANOMALIES JS LOADED");
  async function loadAnomalies(){
 
     const container = document.getElementById("anomalies-data");

@@ -1,56 +1,55 @@
-async function loadAnomalies(){
+ console.log("ANOMALIES JS LOADED");
+ async function loadAnomalies(){
 
-    const container =
-    document.getElementById("anomalies-data");
+    const container = document.getElementById("anomalies-data");
 
+    try {
 
-    try{
+        const response = await fetch("/anomalies");
 
-        const response =
-        await fetch("/anomalies");
+        const data = await response.json();
 
-
-        const data =
-        await response.json();
+        console.log(data);
 
 
         if(data.anomalies.length === 0){
 
-            container.innerHTML =
-            "<h3>No anomalies detected</h3>";
+            container.innerHTML = `
+                <div class="card">
+                    <h3>No anomalies detected</h3>
+                </div>
+            `;
 
             return;
-
         }
 
 
-        container.innerHTML =
-        data.anomalies.map(a => `
+        container.innerHTML = data.anomalies.map(a => `
 
             <div class="card">
 
+                <h3>⚠️ Anomaly detected</h3>
+
                 <p>
-                Value: ${a.value}
+                    Value: ${a.value}
                 </p>
 
                 <p>
-                Z-score: ${a.z_score}
+                    Z-score: ${a.z_score}
                 </p>
 
             </div>
 
         `).join("");
 
-    }
 
+    } catch(error){
 
-    catch(error){
+        console.error("ERROR:", error);
 
-        console.error(error);
-
-        container.innerHTML =
-        "Error loading anomalies";
-
+        container.innerHTML = `
+            <h3>Error loading anomalies</h3>
+        `;
     }
 
 }

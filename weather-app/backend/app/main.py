@@ -14,7 +14,7 @@ from .routers import weather
 from .routers import forecast
 from .routers import anomalies
 from .routers import health
-
+from .routers import dashboard
 
 # Project paths
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -34,6 +34,7 @@ app.include_router(weather.router)
 app.include_router(forecast.router)
 app.include_router(anomalies.router)
 app.include_router(health.router)
+app.include_router(dashboard.router)
 
 
 
