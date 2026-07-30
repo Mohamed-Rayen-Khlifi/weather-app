@@ -22,33 +22,33 @@ let chart = null;
 
 
 // ==========================
-// Get latest measurement
+// Get Dashboard Data
 // ==========================
 
-async function getLatest(metric) {
+async function getDashboardData(){
 
     try {
 
         const response = await fetch(
-            `/measurements/latest?metric=${metric}`
+            "/dashboard"
         );
 
 
-        if (!response.ok) {
+        if(!response.ok){
 
             console.error(
-                "Error getting",
-                metric
+                "Dashboard API error"
             );
 
             return null;
+
         }
 
 
         return await response.json();
 
 
-    } catch(error) {
+    } catch(error){
 
         console.error(error);
 
@@ -61,13 +61,13 @@ async function getLatest(metric) {
 
 
 // ==========================
-// Get history
+// Get History
 // ==========================
 
 async function getHistory(
     metric = "temperature",
     limit = 20
-) {
+){
 
     try {
 
@@ -76,7 +76,7 @@ async function getHistory(
         );
 
 
-        if (!response.ok) {
+        if(!response.ok){
 
             return [];
 
@@ -86,7 +86,7 @@ async function getHistory(
         return await response.json();
 
 
-    } catch(error) {
+    } catch(error){
 
         console.error(error);
 
@@ -94,84 +94,75 @@ async function getHistory(
 
     }
 
-}
-
-
-
+}    
 // ==========================
-// Update dashboard
+// Update Dashboard
 // ==========================
 
 async function updateDashboard(){
 
 
-    const temperature =
-        await getLatest("temperature");
+    const data = await getDashboardData();
 
 
-    const humidity =
-        await getLatest("humidity");
+    if(!data){
 
+        return;
 
-    const wind =
-        await getLatest("windspeed");
-
-
-    const pressure =
-        await getLatest("pressure");
+    }
 
 
 
-    if(temperature){
+    if(data.temperature){
 
         tempValue.textContent =
-            `${temperature.value} °C`;
+            `${data.temperature.value} °C`;
 
         tempTime.textContent =
             new Date(
-                temperature.recorded_at
+                data.temperature.recorded_at
             ).toLocaleString();
 
     }
 
 
 
-    if(humidity){
+    if(data.humidity){
 
         humidityValue.textContent =
-            `${humidity.value} %`;
+            `${data.humidity.value} %`;
 
         humidityTime.textContent =
             new Date(
-                humidity.recorded_at
+                data.humidity.recorded_at
             ).toLocaleString();
 
     }
 
 
 
-    if(wind){
+    if(data.windspeed){
 
         windValue.textContent =
-            `${wind.value} km/h`;
+            `${data.windspeed.value} km/h`;
 
         windTime.textContent =
             new Date(
-                wind.recorded_at
+                data.windspeed.recorded_at
             ).toLocaleString();
 
     }
 
 
 
-    if(pressure){
+    if(data.pressure){
 
         pressureValue.textContent =
-            `${pressure.value} hPa`;
+            `${data.pressure.value} hPa`;
 
         pressureTime.textContent =
             new Date(
-                pressure.recorded_at
+                data.pressure.recorded_at
             ).toLocaleString();
 
     }
@@ -192,7 +183,7 @@ async function updateDashboard(){
 
 
 // ==========================
-// Draw chart
+// Draw Chart
 // ==========================
 
 function drawChart(history){
@@ -290,12 +281,14 @@ if(refreshBtn){
 }
 
 
-// First load
+
+// First Load
 
 updateDashboard();
 
 
-// Auto refresh every minute
+
+// Auto Refresh
 
 setInterval(
     updateDashboard,
