@@ -15,6 +15,7 @@ from .routers import forecast
 from .routers import anomalies
 from .routers import health
 from .routers import dashboard
+from .routers import ai
 
 # Project paths
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -35,6 +36,7 @@ app.include_router(forecast.router)
 app.include_router(anomalies.router)
 app.include_router(health.router)
 app.include_router(dashboard.router)
+app.include_router(ai.router)
 
 
 
@@ -115,6 +117,14 @@ def anomalies_page(request: Request):
     return templates.TemplateResponse(
         request=request,
         name="anomalies.html",
+        context={}
+    )
+@app.get("/ai-page")
+def ai_page(request: Request):
+
+    return templates.TemplateResponse(
+        request=request,
+        name="ai.html",
         context={}
     )
 @app.on_event("startup")

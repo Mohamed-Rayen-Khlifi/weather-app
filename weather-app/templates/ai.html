@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+AI Prediction
+{% endblock %}
+
+
+
+{% block content %}
+
+
+<h1>
+    AI Weather Prediction
+</h1>
+
+
+
+<div class="controls">
+
+
+    <label for="ai-metric-select">
+        Select metric:
+    </label>
+
+
+
+    <select id="ai-metric-select">
+
+
+        <option value="temperature">
+            Temperature
+        </option>
+
+
+        <option value="humidity">
+            Humidity
+        </option>
+
+
+        <option value="windspeed">
+            Wind Speed
+        </option>
+
+
+        <option value="pressure">
+            Pressure
+        </option>
+
+
+    </select>
+
+
+
+    <button id="ai-btn">
+        Predict
+    </button>
+
+
+</div>
+
+
+
+
+<div id="ai-result" class="card">
+
+    Choose a metric...
+
+</div>
+
+
+
+<script src="/static/js/ai.js"></script>
+
+
+
+{% endblock %}
