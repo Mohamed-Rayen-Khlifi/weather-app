@@ -3,6 +3,7 @@ from sqlalchemy import desc
 import pandas as pd
 
 from ..models import Measurement
+from ..utils.units import get_unit
 
 
 def get_anomalies(
@@ -10,6 +11,9 @@ def get_anomalies(
     metric: str = "temperature",
     threshold: float = 2.0
 ):
+
+    metric = str(metric)
+
 
     # Get last 50 measurements
     records = (
@@ -25,7 +29,11 @@ def get_anomalies(
     if len(records) < 5:
         return {
             "metric": metric,
+            "unit": get_unit(metric),
             "threshold": threshold,
+            "mean": None,
+            "std": None,
+            "total_points": len(records),
             "anomalies": [],
             "message": "Not enough data"
         }
@@ -52,9 +60,11 @@ def get_anomalies(
 
         return {
             "metric": metric,
+            "unit": get_unit(metric),
             "threshold": threshold,
-            "mean": round(mean,2),
+            "mean": round(float(mean),2),
             "std": 0,
+            "total_points": len(records),
             "anomalies": []
         }
 
@@ -84,6 +94,8 @@ def get_anomalies(
     return {
 
         "metric": metric,
+
+        "unit": get_unit(metric),
 
         "threshold": threshold,
 

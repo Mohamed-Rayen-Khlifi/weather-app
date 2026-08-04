@@ -10,17 +10,96 @@ Forecast
 {% block content %}
 
 
-<h1>Weather Forecast</h1>
+<div class="station">
 
 
-<div id="forecast-data" class="cards">
+<header class="masthead">
 
-    Loading...
+    <p class="eyebrow">
+        Prévision
+        <span class="sep">·</span>
+        <span class="coords">moyenne mobile</span>
+    </p>
+
+
+    <div class="masthead-row">
+
+        <h1>
+            Weather Forecast
+        </h1>
+
+
+        <p class="sync">
+
+            <span class="dot live"></span>
+
+            <span id="forecast-status">
+                Loading...
+            </span>
+
+        </p>
+
+    </div>
+
+</header>
+
+
+
+<section class="query-panel">
+
+
+    <div class="field">
+
+        <span class="field-label">
+            Metric
+        </span>
+
+        <div class="metric-tabs" id="metric-tabs"></div>
+
+    </div>
+
+
+    <div class="field field--narrow">
+
+        <label class="field-label" for="n-points">
+            Points
+        </label>
+
+        <input
+            class="field-input"
+            type="number"
+            id="n-points"
+            min="2"
+            max="100"
+            value="5"
+        >
+
+    </div>
+
+
+    <button class="btn" type="button" id="run-forecast">
+        Forecast
+    </button>
+
+
+</section>
+
+
+
+<div id="forecast-data" class="readouts">
+
+    <div class="card empty">
+        Loading...
+    </div>
 
 </div>
 
 
-<script src="/static/js/forecast.js"></script>
+</div>
+
+
+<script src="/static/js/metrics.js?v={{ asset_version }}"></script>
+<script src="/static/js/forecast.js?v={{ asset_version }}"></script>
 
 
 {% endblock %}
