@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}
+AI Prediction & Anomaly Detection
+{% endblock %}
+
+{% block content %}
+
+<h1>🤖 Weather AI</h1>
+
+<div class="ai-controls">
+
+```
+<label for="ai-metric-select">
+    Select metric:
+</label>
+
+<select id="ai-metric-select">
+
+    <option value="temperature">
+        Temperature
+    </option>
+
+    <option value="humidity">
+        Humidity
+    </option>
+
+    <option value="windspeed">
+        Wind Speed
+    </option>
+
+    <option value="pressure">
+        Pressure
+    </option>
+
+</select>
+
+<button id="ai-btn">
+    Analyze
+</button>
+```
+
+</div>
+
+<div class="ai-card">
+
+```
+<h2>🔮 AI Prediction</h2>
+
+<div id="ai-result">
+    Choose a metric...
+</div>
+```
+
+</div>
+
+<div class="ai-card">
+
+```
+<h2>🚨 Anomaly Detection</h2>
+
+<div id="anomaly-result">
+    Choose a metric...
+</div>
+```
+
+</div>
+
+<script src="/static/js/ai.js"></script>
+
+{% endblock %}

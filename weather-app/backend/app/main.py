@@ -15,6 +15,8 @@ from .routers import forecast
 from .routers import anomalies
 from .routers import health
 from .routers import logs
+from .routers import dashboard
+from .routers import ai
 
 
 # Project paths
@@ -36,6 +38,8 @@ app.include_router(forecast.router)
 app.include_router(anomalies.router)
 app.include_router(health.router)
 app.include_router(logs.router)
+app.include_router(dashboard.router)
+app.include_router(ai.router)
 
 
 
@@ -136,6 +140,18 @@ def logs_page(request: Request):
         name="logs.html",
         context={}
     )
+
+
+@app.get("/ai-page")
+def ai_page(request: Request):
+
+    return templates.TemplateResponse(
+        request=request,
+        name="ai.html",
+        context={}
+    )
+
+
 @app.on_event("startup")
 def startup_event():
 

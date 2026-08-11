@@ -65,7 +65,13 @@
                 Anomalies
             </a>
         </li>
-
+        
+        <li>
+            <a href="/ai-page"
+               {% if request.url.path == '/ai-page' %}class="active"{% endif %}>
+                AI Prediction
+            </a>
+        </li>
 
         <li>
             <a href="/logs-page"

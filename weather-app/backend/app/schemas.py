@@ -61,6 +61,7 @@ class MeasurementResponse(BaseModel):
         from_attributes = True
 
 
+
 class ForecastResponse(BaseModel):
 
     metric: str
@@ -70,6 +71,7 @@ class ForecastResponse(BaseModel):
     based_on: int
 
     last_values: list[float]
+
 
 
 class HealthResponse(BaseModel):

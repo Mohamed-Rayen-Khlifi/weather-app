@@ -7,7 +7,7 @@ from ..utils.units import get_unit
 
 def get_forecast(
     db: Session,
-    metric: str = "temperature",
+    metric: str,
     n_points: int = 5
 ):
 
@@ -24,6 +24,7 @@ def get_forecast(
 
 
     if len(records) < 2:
+
         return {
             "metric": metric,
             "forecast": None,
@@ -35,17 +36,20 @@ def get_forecast(
         }
 
 
+
     values = [
         record.value
         for record in reversed(records)
     ]
 
 
-    # Simple moving average prediction
+
     forecast = sum(values) / len(values)
 
 
+
     last_measurement = records[0]
+
 
 
     return {
@@ -60,6 +64,7 @@ def get_forecast(
 
         "last_values": values,
 
-        "last_update": last_measurement.recorded_at.isoformat()
+        "last_update":
+            last_measurement.recorded_at.isoformat()
 
     }
