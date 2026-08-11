@@ -1,5 +1,5 @@
 # 🌤️ Weather App - Projet Stage
-
+#
 ## 📌 Description
 Application web de prévisions météo développée en *Python* avec le framework *Flask*.  
 Ce projet a été réalisé dans le cadre d'un stage en développement web
